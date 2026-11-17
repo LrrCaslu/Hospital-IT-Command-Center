@@ -1,0 +1,24 @@
+HOSPITAL IT COMMAND CENTER - REPARO DE INSTALACAO (SERVBAY / WINDOWS)
+
+CAUSA DO ERRO DE 17/11/2026:
+bootstrap/cache estava ausente no ZIP anterior. O Composer instalou o vendor,
+mas o Laravel falhou em package:discover, key:generate e migrate.
+O MySQL foi conectado e hospital_it_noc foi confirmado/criado.
+
+PARA SUA INSTALACAO ATUAL (RECOMENDADO):
+1) Feche a janela do instalador anterior.
+2) Extraia o ZIP de REPARO diretamente dentro da pasta hospital-it-command-center
+   que ja contem vendor, artisan e .env. Confirme a substituicao dos arquivos.
+3) Abra INICIAR_WINDOWS.bat e confira a mensagem BANCO DE DADOS PRONTO.
+4) Abra VERIFICAR_BANCO_WINDOWS.bat para confirmar as tabelas e usuario admin.
+5) O dominio continua sendo configurado so no ServBay (pasta public).
+
+SE INSTALAR DO ZERO COM O ZIP COMPLETO:
+- Extraia em uma pasta NOVA e execute INICIAR_WINDOWS.bat.
+- Composer exigira internet para instalar vendor na primeira execucao.
+
+O REPARO NAO EXCLUI O BANCO, A PASTA VENDOR, O .ENV OU OS DADOS EXISTENTES.
+NUNCA execute php artisan migrate:fresh em um banco com dados a preservar.
+
+LOG: INSTALACAO_SERVBAY.log
+LOGIN DEMO: admin@hospital.local / Admin@123456

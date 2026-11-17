@@ -1,0 +1,92 @@
+DIAGNOSTICO HOSPITAL NOC - 2026-11-17T11:58:37
+[2026-11-17 11:58:37] Diretorio: C:\Users\Estatísticas\Downloads\Hospital_IT_Command_Center_ServBay_CACHE_CORRIGIDO\hospital-it-command-center
+[2026-11-17 11:58:37] php : C:\ServBay\bin\php.cmd
+[2026-11-17 11:58:37] php-8.3 : NAO ENCONTRADO
+[2026-11-17 11:58:37] php-8.4 : C:\ServBay\bin\php-8.4.cmd
+[2026-11-17 11:58:37] composer : C:\ServBay\bin\composer.cmd
+[2026-11-17 11:58:37] mysql : C:\ServBay\bin\mysql.cmd
+[2026-11-17 11:58:37] npm : C:\ServBay\bin\npm.cmd
+[2026-11-17 11:58:37] OK: pastas do Laravel criadas e com gravacao confirmada (bootstrap/cache e storage).
+[2026-11-17 11:58:38] PHP selecionado: C:\ServBay\bin\php-8.4.cmd
+[2026-11-17 11:58:38] INICIANDO: php -v
+PHP 8.4.26 (cli) (built: Sep 22 2026 20:55:31) (NTS Visual C++ 2022 x64)
+Copyright (c) The PHP Group
+Zend Engine v4.4.26, Copyright (c) Zend Technologies
+[2026-11-17 11:58:38] OK: php -v
+[2026-11-17 11:58:38] INICIANDO: extensoes PHP
+[PHP Modules]
+bcmath
+bz2
+calendar
+Core
+ctype
+curl
+date
+dba
+dom
+exif
+FFI
+fileinfo
+filter
+ftp
+gd
+gettext
+gmp
+hash
+iconv
+imagick
+imap
+intl
+json
+ldap
+libxml
+mbstring
+memcache
+memcached
+mysqli
+mysqlnd
+odbc
+openssl
+pcre
+PDO
+pdo_mysql
+PDO_ODBC
+pdo_pgsql
+pdo_sqlite
+pdo_sqlsrv
+pgsql
+Phar
+random
+readline
+redis
+Reflection
+session
+shmop
+SimpleXML
+soap
+sockets
+sodium
+SPL
+sqlite3
+sqlsrv
+standard
+tidy
+tokenizer
+xml
+xmlreader
+xmlwriter
+xsl
+zip
+zlib
+
+[Zend Modules]
+
+[2026-11-17 11:58:38] OK: extensoes PHP
+[2026-11-17 11:58:38] INICIANDO: testar MySQL (somente leitura)
+Conexao MySQL OK.
+[2026-11-17 11:58:38] OK: testar MySQL (somente leitura)
+[2026-11-17 11:58:38] vendor/autoload.php EXISTE.
+[2026-11-17 11:58:38] INICIANDO: versao Laravel
+Laravel Framework 12.73.0
+[2026-11-17 11:58:39] OK: versao Laravel
+[2026-11-17 11:58:39] Diagnostico concluido: C:\Users\Estatísticas\Downloads\Hospital_IT_Command_Center_ServBay_CACHE_CORRIGIDO\hospital-it-command-center\VERIFICACAO_AMBIENTE.log

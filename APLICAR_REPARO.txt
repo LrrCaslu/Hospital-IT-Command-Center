@@ -1,0 +1,18 @@
+HOSPITAL IT COMMAND CENTER - REPARO DA INSTALACAO EXISTENTE
+
+Use o arquivo Hospital_IT_Command_Center_REPARO_INSTALACAO.zip para consertar a
+instalacao que ja baixou vendor/ via Composer.
+
+1. Feche INICIAR_WINDOWS.bat / PowerShell aberto da instalacao antiga.
+2. Abra a pasta do projeto que ja contem artisan, vendor/, .env e bootstrap/.
+3. Extraia o conteudo DO ZIP DE REPARO nessa pasta. Permita substituir arquivos.
+   ATENCAO: nao extraia dentro de outra subpasta hospital-it-command-center.
+4. Execute INICIAR_WINDOWS.bat novamente.
+5. Confira BANCO DE DADOS PRONTO. Depois execute VERIFICAR_BANCO_WINDOWS.bat.
+
+O reparo cria bootstrap/cache, verifica gravacao e preserva .env, vendor/, e
+composer.lock existentes. Nenhum script configura site/dominio no ServBay.
+O dominio system.test permanece configurado por voce, e a raiz e .../public.
+
+NUNCA execute migrate:fresh em um banco contendo dados que deseja preservar.
+Se ocorrer erro, envie o novo INSTALACAO_SERVBAY.log.

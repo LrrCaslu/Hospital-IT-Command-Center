@@ -1,0 +1,40 @@
+HOSPITAL IT COMMAND CENTER - SERVBAY (WINDOWS)
+
+VOCE CONFIGURA O SITE NO SERVBAY. ESTE PACOTE NAO ALTERA APACHE, DOMINIO NEM HOSTS.
+
+1) Extraia o ZIP. Abra a pasta hospital-it-command-center (aquela que contem artisan).
+2) Ative MySQL e PHP 8.3+ no ServBay, com pdo_mysql habilitado.
+3) Execute INICIAR_WINDOWS.bat: instala Laravel/Composer (se necessario),
+   prepara .env, cria o banco hospital_it_noc (quando tem permissao),
+   executa migrations/seeders e verifica seis unidades e usuario admin.
+4) Para preparar/verificar APENAS o banco: execute PREPARAR_BANCO_WINDOWS.bat.
+   Esse script preserva o .env e nao apaga tabelas ou dados existentes.
+5) Para verificar apenas o banco: execute VERIFICAR_BANCO_WINDOWS.bat.
+6) No ServBay, MANTENHA SEU DOMINIO E PHP ja configurados.
+   O DIRETORIO RAIZ do site deve apontar para: \hospital-it-command-center\public
+   Exemplo: C:\ServBay\www\hospital-it-command-center\public
+   O endereco web e definido POR VOCE no ServBay (ex.: http://system.test/login).
+
+ARQUIVOS DE LOG:
+  INSTALACAO_SERVBAY.log (instalacao completa)
+  PREPARACAO_BANCO.log (apenas banco)
+  VERIFICACAO_BANCO.log (checagem de banco)
+
+Login local demonstrativo: admin@hospital.local / Admin@123456
+
+IMPORTANTE: O ZIP NAO CONTEM vendor/. Na primeira execucao, o Composer
+precisa de internet. Nao altere public/index.php para contornar falhas.
+O banco indicado no .env.example usa credenciais EXCLUSIVAS de teste local.
+
+Se o seu dominio for system.test, ajuste APP_URL no .env para http://system.test
+ou https://system.test conforme o protocolo do site configurado no ServBay.
+Nao configure o site via scripts .bat; utilize a interface do ServBay.
+
+CORRECAO PARA PACKAGE MANIFEST / BOOTSTRAP CACHE (17/11/2026)
+- O instalador cria bootstrap/cache e storage/framework/* ANTES do Composer.
+- Confere permissao de escrita com arquivos temporarios.
+- Interrompe em erros fatais e valida APP_KEY, tabelas, seis unidades e login demo.
+- O .env existente, a pasta vendor, composer.lock e os bancos sao preservados.
+- Se ja instalou Composer, e suficiente aplicar o ZIP de reparo por cima da pasta
+  hospital-it-command-center e executar INICIAR_WINDOWS.bat novamente.
+- A janela .bat agora fica visivel ate voce pressionar uma tecla.

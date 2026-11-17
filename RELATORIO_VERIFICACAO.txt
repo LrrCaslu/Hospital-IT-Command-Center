@@ -1,0 +1,38 @@
+RELATORIO DE VERIFICACAO ESTATICA - HOSPITAL IT COMMAND CENTER
+
+Gerado para a entrega local ServBay.
+
+VERIFICADO NESTE AMBIENTE
+- Sintaxe de 89 arquivos PHP: todos aprovados por php -l.
+- Sintaxe de 5 arquivos JS/config Vite: todos aprovados por node --check.
+- Sintaxe de composer.json e package.json: JSON valido.
+- Correspondencia de rotas utilizadas pelo Blade e Controllers: sem nomes ausentes.
+- As views Blade foram conferidas quanto ao balanceamento de if/foreach/forelse/for.
+- A pasta public/ contem index.php, .htaccess e assets CSS/JS offline.
+- A especificacao original fornecida foi arquivada em docs/ESPECIFICACAO_ORIGINAL.txt.
+
+NAO VERIFICADO NESTE AMBIENTE
+- composer install ou npm install (Composer nao disponivel e repositorios inacessiveis).
+- php artisan, migracoes MySQL, testes PHPUnit, login no navegador, ServBay/Apache.
+- Chamada real a MikroTik, GLPI, UniFi, Zabbix, Wazuh, Duplicati.
+- Politica de seguranca de producao, testes de penetracao, SLAs reais.
+
+O codigo e um MVP em fonte, nao uma certificacao de producao.
+Realize os testes de README.md no ServBay.
+
+REVISAO DOS SCRIPTS WINDOWS (17/11/2026)
+- Criado INICIAR_WINDOWS.bat, que abre PowerShell com -NoExit.
+- Adicionado log de instalacao e diagnostico permanente.
+- Criado teste e criacao controlada do banco MySQL usando as configuracoes do .env.
+- Instalacao do Composer local quando necessario com verificacao SHA-384 do instalador.
+- Resposta HTTP 503 amigavel quando vendor/autoload.php nao existe.
+- Arquivos .bat/.ps1 NAO foram executados no Windows; validacao de runtime no ServBay permanece pendente.
+
+REVISAO: INSTALACAO SEM CONFIGURACAO DE SITE (17/11/2026)
+- O instalador nao cria dominio, nao altera Apache, nao configura ServBay e nao abre navegador.
+- Adicionado PREPARAR_BANCO_WINDOWS.bat (sem baixar dependencias Laravel).
+- Adicionado VERIFICAR_BANCO_WINDOWS.bat + verificacao PDO somente leitura.
+- Confirmacao final depende de encontrar as tabelas, pelo menos seis unidades e o login admin.
+- APP_URL de exemplo agora coincide com o site system.test apresentado pelo usuario.
+- Em Windows, o Composer usa o mesmo PHP selecionado quando composer.phar e localizavel.
+- Esta validacao e estatica; nenhum PHP/Apache/MySQL/Composer do Windows foi executado aqui.

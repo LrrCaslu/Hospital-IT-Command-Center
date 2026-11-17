@@ -1,0 +1,12 @@
+<?php
+namespace App\Http\Controllers;
+use App\Models\{Asset,OrganizationalUnit};
+use App\Support\{Access,Audit};
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+class AssetController extends Controller {
+ public function index(Request $r){$v=$r->validate(['unit'=>'nullable|integer','status'=>'nullable|in:online,offline,degraded,unknown','category'=>'nullable|string|max:60','q'=>'nullable|string|max:100']);$q=Asset::query()->with('unit')->where('origin','!=',config('noc.mode')==='demo'?'integrated':'demo');Access::scope($q);if(isset($v['unit'])){Access::assertUnit((int)$v['unit']);$q->where('organizational_unit_id',$v['unit']);}foreach(['status','category'] as $k)if(!empty($v[$k]))$q->where($k,$v[$k]);if(!empty($v['q']))$q->where('name','like','%'.str_replace(['%','_'],['\\%','\\_'],$v['q']).'%');$assets=$q->orderBy('name')->paginate(25)->withQueryString();$units=OrganizationalUnit::whereIn('id',$r->user()->unitIds())->orderBy('name')->get();return view('assets',compact('assets','units'));}
+ public function store(Request $r){$d=$r->validate(['organizational_unit_id'=>'required|integer|exists:organizational_units,id','name'=>'required|string|max:140','category'=>'required|in:router,wan,server,access_point,switch,firewall,other','criticality'=>'required|in:low,medium,high,critical','ip_address'=>'nullable|ip','hostname'=>'nullable|string|max:120']);Access::assertUnit((int)$d['organizational_unit_id']);$asset=Asset::create($d+['status'=>'unknown','origin'=>'manual']);Audit::record('assets.create',$asset);return back()->with('success','Ativo cadastrado.');}
+ public function update(Request $r,Asset $asset){Access::assertUnit($asset->organizational_unit_id);$d=$r->validate(['name'=>'required|string|max:140','criticality'=>'required|in:low,medium,high,critical','location'=>'nullable|string|max:120','owner'=>'nullable|string|max:120']);$asset->update($d);Audit::record('assets.update',$asset);return back()->with('success','Ativo atualizado.');}
+ public function transfer(Request $r,Asset $asset){Access::assertUnit($asset->organizational_unit_id);$d=$r->validate(['organizational_unit_id'=>'required|integer|exists:organizational_units,id']);Access::assertUnit((int)$d['organizational_unit_id']);DB::transaction(function()use($asset,$d){$old=$asset->organizational_unit_id;$asset->update($d);Audit::record('assets.transfer',$asset,['from_unit'=>$old,'to_unit'=>(int)$d['organizational_unit_id']]);});return back()->with('success','Ativo transferido com histórico auditável.');}
+}

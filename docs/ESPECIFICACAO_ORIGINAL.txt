@@ -1,0 +1,1411 @@
+# PROMPT — DESENVOLVIMENTO DE PLATAFORMA NOC HOSPITALAR
+
+## 1. Objetivo do projeto
+
+Atue como um engenheiro de software sênior, arquiteto de sistemas, especialista em infraestrutura de redes, segurança da informação, observabilidade e desenvolvimento web.
+
+Sua missão é desenvolver uma aplicação web profissional, denominada provisoriamente **Hospital IT Command Center**, destinada ao monitoramento, à análise e à gestão centralizada da infraestrutura de tecnologia da informação de uma rede hospitalar com múltiplas unidades.
+
+O sistema deverá consolidar, em uma interface única, dados provenientes de:
+
+- MikroTik — infraestrutura de rede e conectividade.
+- GLPI — chamados e gerenciamento de serviços de TI.
+- UniFi — infraestrutura de redes sem fio.
+- Zabbix — monitoramento de servidores, equipamentos e serviços.
+- Wazuh — segurança da informação e detecção de ameaças.
+- Duplicati — execução e acompanhamento de backups.
+
+O objetivo principal é permitir que a equipe de TI identifique problemas rapidamente, compreenda seu impacto, acompanhe incidentes e tome decisões sem precisar alternar constantemente entre ferramentas.
+
+O resultado esperado é uma plataforma visualmente sofisticada, funcional, modular, responsiva, segura e preparada para ambientes corporativos.
+
+**O sistema não deverá ser apenas uma demonstração visual. Todas as funcionalidades implementadas devem possuir comportamento real, persistência de dados, validações, regras de negócio e tratamento adequado de erros.**
+
+---
+
+# 2. Tecnologias obrigatórias
+
+Utilizar as seguintes tecnologias:
+
+### Backend
+- PHP 8.3 ou superior.
+- Laravel em versão estável compatível.
+- APIs REST para comunicação interna e integrações.
+- Laravel HTTP Client para consumo das APIs externas.
+- Laravel Scheduler e filas para processos automatizados.
+- Arquitetura baseada em Services, Jobs, Controllers, Models, Policies e DTOs quando apropriado.
+
+### Frontend
+- Blade.
+- Livewire.
+- Alpine.js.
+- Tailwind CSS.
+- Chart.js ou Apache ECharts para gráficos interativos.
+- Lucide Icons.
+- Vite para gerenciamento dos recursos frontend.
+
+### Banco de dados
+- MySQL 8.0 ou superior.
+- Eloquent ORM.
+- Migrations.
+- Seeders.
+- Índices e relacionamentos adequados.
+- Transações nas operações que exigirem consistência.
+
+### Ambiente local
+
+A aplicação deverá funcionar localmente utilizando **ServBay**.
+
+Configurações iniciais de desenvolvimento:
+
+```env
+APP_NAME="Hospital IT Command Center"
+APP_ENV=local
+APP_DEBUG=true
+APP_TIMEZONE=America/Sao_Paulo
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=hospital_it_noc
+DB_USERNAME=root
+DB_PASSWORD=ServBay.dev
+```
+
+O host e a porta do MySQL deverão ser confirmados de acordo com a configuração efetiva do ServBay.
+
+Criar automaticamente as tabelas por migrations, configurar dados fictícios por seeders e entregar instruções para inicialização.
+
+As credenciais `root` fornecidas são exclusivamente para desenvolvimento local. A aplicação deverá permitir utilizar posteriormente um usuário próprio do banco, com permissões restritas.
+
+---
+
+# 3. Identidade visual e experiência do usuário
+
+Desenvolver uma interface com identidade visual semelhante às plataformas modernas de infraestrutura, observabilidade, operações de rede e SOC.
+
+### Diretrizes visuais
+
+- Tema Dark como padrão.
+- Visual premium, moderno, profissional e minimalista.
+- Fundo grafite ou azul extremamente escuro.
+- Cards com bordas sutis.
+- Tipografia moderna e hierarquia visual consistente.
+- Espaçamento equilibrado.
+- Cores utilizadas funcionalmente, principalmente para os estados dos equipamentos.
+- Microinterações discretas.
+- Gráficos de excelente legibilidade.
+- Responsividade para monitores grandes, notebooks e tablets.
+- Nenhum excesso de gradientes, efeitos luminosos, emojis ou animações desnecessárias.
+- Evitar aparência genérica de painel administrativo ou interface artificial.
+
+### Estados visuais padronizados
+
+- Verde: operacional.
+- Amarelo: atenção.
+- Vermelho: crítico.
+- Cinza: desconhecido ou sem comunicação.
+- Azul: informativo.
+
+Os estados deverão possuir também ícones e textos, não dependendo exclusivamente de cores.
+
+### Layout principal
+
+Criar uma estrutura com:
+
+**Sidebar esquerda**
+- Visão Geral
+- Centro de Operações
+- Unidades Hospitalares
+- Infraestrutura de Rede
+- Conectividade e WAN
+- Redes Wi-Fi
+- Servidores e Serviços
+- Chamados e SLA
+- Segurança
+- Backups
+- Incidentes
+- Alertas
+- Relatórios
+- Histórico e Auditoria
+- Integrações
+- Administração
+- Configurações
+
+**Header superior**
+- Nome da plataforma.
+- Unidade selecionada.
+- Filtro global de período.
+- Estado das integrações.
+- Última atualização.
+- Indicador de sincronização.
+- Central de notificações.
+- Busca global.
+- Perfil do usuário.
+
+---
+
+# 4. Dashboard principal — visão geral da rede hospitalar
+
+A tela inicial será o centro de operações da plataforma.
+
+Deverá consolidar as informações de todas as unidades cadastradas.
+
+### Cards de indicadores
+
+Exibir:
+
+1. Total de unidades hospitalares.
+2. Unidades operacionais.
+3. Unidades com problemas.
+4. Unidades sem comunicação.
+5. Equipamentos monitorados.
+6. Equipamentos offline.
+7. Servidores operacionais.
+8. Access Points online.
+9. Clientes Wi-Fi conectados.
+10. Chamados abertos.
+11. Chamados críticos.
+12. Incidentes ativos.
+13. Alertas de segurança.
+14. Backups com falha.
+15. Disponibilidade consolidada.
+16. Pontos de atenção.
+
+Cada card deverá apresentar, quando aplicável:
+
+- Valor atual.
+- Variação em relação ao período anterior.
+- Status.
+- Data/hora da coleta.
+- Possibilidade de abrir a página detalhada.
+
+### Painel de situação das unidades
+
+Criar uma visualização com todas as unidades cadastradas.
+
+Cada unidade deverá apresentar:
+
+- Nome.
+- Código.
+- Localidade.
+- Estado operacional geral.
+- Disponibilidade da conexão.
+- Latência.
+- Quantidade de equipamentos.
+- Quantidade de equipamentos offline.
+- Chamados abertos.
+- Alertas críticos.
+- Status dos backups.
+- Última comunicação.
+
+Permitir alternar entre visualização em cards e tabela.
+
+Ao selecionar uma unidade, carregar sua visão operacional detalhada.
+
+### Painel de pontos de atenção
+
+Criar um indicador central com a quantidade de problemas que exigem intervenção.
+
+Exemplos:
+
+- Link WAN indisponível.
+- Servidor crítico offline.
+- Backup sem execução recente.
+- Job de backup com falha.
+- Chamado com SLA vencido.
+- Evento de segurança de alta severidade.
+- Access Point importante desconectado.
+- Consumo crítico de CPU ou memória.
+- Integração com comunicação interrompida.
+
+Os pontos de atenção devem ser priorizados por criticidade e impacto, evitando duplicidade de alertas relacionados ao mesmo incidente.
+
+---
+
+# 5. Integração MikroTik
+
+Desenvolver um módulo de monitoramento dos roteadores MikroTik de cada unidade.
+
+Utilizar interfaces oficiais e suportadas pelo RouterOS, considerando compatibilidade de versões e comunicação segura.
+
+### Funcionalidades
+
+- Cadastro de múltiplos roteadores.
+- Associação do equipamento a uma unidade.
+- Status online/offline.
+- CPU.
+- Memória utilizada e disponível.
+- Uptime.
+- Versão do RouterOS, com acesso restrito.
+- Latência.
+- Perda de pacotes.
+- Utilização da WAN.
+- Download e upload.
+- Interfaces ativas.
+- Interfaces inativas.
+- Estado dos links.
+- Tráfego histórico.
+- Erros de interface, quando disponíveis.
+- Identificação de reinicialização inesperada.
+
+### Gráficos
+
+- Tráfego WAN em tempo real.
+- Histórico de download/upload.
+- CPU e RAM.
+- Latência por período.
+- Disponibilidade da conexão.
+
+### Regras de alertas
+
+Permitir configurar limites como:
+
+- CPU acima de 85%.
+- RAM acima de 90%.
+- Latência acima de 150 ms.
+- Perda de pacotes acima de 5%.
+- Link indisponível.
+- Roteador sem comunicação.
+
+Esses valores serão padrões editáveis, não limites universais.
+
+O monitoramento deverá ser somente leitura por padrão.
+
+---
+
+# 6. Integração GLPI
+
+Integrar a plataforma ao GLPI por sua API oficial, respeitando os mecanismos de autenticação da versão utilizada.
+
+### Informações
+
+- Chamados abertos.
+- Chamados pendentes.
+- Chamados em atendimento.
+- Chamados resolvidos.
+- Chamados fechados.
+- Chamados por prioridade.
+- Chamados por unidade.
+- Chamados por técnico.
+- Chamados por categoria.
+- Tempo médio de resolução.
+- Chamados com SLA próximo do vencimento.
+- Chamados com SLA vencido.
+- Chamados reabertos.
+- Chamados sem responsável.
+
+### Dashboard GLPI
+
+Criar gráficos de:
+
+- Evolução de chamados.
+- Distribuição por status.
+- Chamados por unidade.
+- Chamados por categoria.
+- Tempo médio de atendimento.
+- Cumprimento de SLA.
+
+### Integração operacional
+
+Permitir abrir o chamado original no GLPI através de link seguro.
+
+Não duplicar desnecessariamente as funcionalidades completas do helpdesk.
+
+O GLPI permanecerá como fonte oficial dos dados dos chamados.
+
+---
+
+# 7. Integração UniFi
+
+Integrar equipamentos UniFi através da API adequada à versão e ao tipo de controlador utilizado.
+
+### Monitoramento
+
+- Controladores cadastrados.
+- Sites UniFi.
+- Access Points.
+- APs online/offline.
+- Switches gerenciados, quando disponíveis.
+- Clientes conectados.
+- Clientes por AP.
+- Clientes por SSID.
+- Uso de canais.
+- Utilização das bandas 2,4 GHz, 5 GHz e 6 GHz, conforme o equipamento.
+- Consumo de banda.
+- Quantidade de dispositivos conectados.
+- Qualidade de conexão, quando disponibilizada.
+- Reinicializações.
+- Histórico de indisponibilidade.
+
+### Interface
+
+Criar:
+
+- Visão geral da rede wireless.
+- Lista de APs por unidade.
+- Gráficos de clientes conectados.
+- Distribuição por SSID.
+- APs com maior utilização.
+- Histórico de conectividade.
+- Alertas de equipamentos indisponíveis.
+
+Não apresentar informações que a API ou o modelo do equipamento não disponibilizem.
+
+---
+
+# 8. Integração Zabbix
+
+Integrar por meio da API oficial do Zabbix.
+
+### Informações
+
+- Hosts monitorados.
+- Hosts disponíveis.
+- Hosts indisponíveis.
+- Problemas ativos.
+- Problemas reconhecidos.
+- Triggers.
+- Severidades.
+- CPU.
+- Memória.
+- Armazenamento.
+- Uso de disco.
+- Serviços monitorados.
+- Histórico de disponibilidade.
+- Eventos recentes.
+
+### Funcionalidades
+
+- Filtrar hosts por unidade.
+- Agrupar por categoria.
+- Identificar recursos críticos.
+- Exibir severidade dos eventos.
+- Apresentar gráficos históricos.
+- Acessar o problema original no Zabbix.
+- Identificar hosts sem coleta recente.
+
+### Serviços críticos hospitalares
+
+Permitir classificar sistemas monitorados de acordo com sua criticidade operacional.
+
+Exemplos fictícios:
+
+- Prontuário eletrônico.
+- Sistema de laboratório.
+- Sistema de radiologia.
+- PACS.
+- Active Directory.
+- DNS.
+- DHCP.
+- Banco de dados.
+- Servidor de arquivos.
+- Sistemas de integração hospitalar.
+
+A indisponibilidade de serviços classificados como críticos deverá influenciar a prioridade do incidente.
+
+---
+
+# 9. Integração Wazuh
+
+Criar um módulo dedicado à segurança da informação.
+
+Integrar com as APIs e interfaces oficiais compatíveis com o ambiente Wazuh implantado.
+
+### Indicadores
+
+- Agentes cadastrados.
+- Agentes ativos.
+- Agentes desconectados.
+- Agentes sem comunicação recente.
+- Alertas por severidade.
+- Eventos por unidade.
+- Eventos por equipamento.
+- Integridade de arquivos.
+- Detecção de alterações relevantes.
+- Vulnerabilidades, quando disponíveis.
+- Eventos de autenticação.
+- Eventos de segurança recentes.
+
+### Dashboard de segurança
+
+Criar gráficos de:
+
+- Alertas por severidade.
+- Evolução de eventos.
+- Equipamentos com mais alertas.
+- Agentes desconectados.
+- Categorias de alertas.
+
+### Regras
+
+- Destacar eventos críticos.
+- Permitir reconhecimento local de alertas.
+- Preservar os dados originais na ferramenta de origem.
+- Registrar ações de analistas.
+- Evitar exposição desnecessária de informações sensíveis.
+- Aplicar controle de acesso específico para detalhes de segurança.
+
+**Importante:** informações de vulnerabilidades, nomes internos, IPs e detalhes de segurança não devem ficar disponíveis indiscriminadamente a todos os usuários.
+
+---
+
+# 10. Integração Duplicati
+
+Desenvolver monitoramento centralizado das rotinas de backup.
+
+A integração deverá considerar a versão do Duplicati, suas interfaces autenticadas disponíveis e limitações documentadas.
+
+### Informações
+
+- Servidores com backups configurados.
+- Jobs cadastrados.
+- Jobs executados.
+- Jobs concluídos.
+- Jobs com falha.
+- Jobs em execução.
+- Última execução.
+- Próxima execução, quando disponível.
+- Duração do backup.
+- Volume processado.
+- Volume armazenado, quando disponível.
+- Quantidade de arquivos processados.
+- Histórico de falhas.
+- Integridade e verificação, quando disponíveis.
+
+### Regras
+
+Gerar alertas para:
+
+- Job com falha.
+- Backup sem execução no prazo configurado.
+- Backup com duração anormal.
+- Ausência de informações recentes.
+- Erro de verificação de backup.
+
+### Dashboard
+
+- Taxa de sucesso.
+- Jobs com falhas.
+- Últimos backups.
+- Volumes de dados.
+- Histórico de execução.
+- Status por unidade.
+
+Diferenciar explicitamente backup executado com sucesso de backup efetivamente testado e restaurável.
+
+---
+
+# 11. Central de incidentes e correlação de eventos
+
+Implementar uma central própria de incidentes operacionais.
+
+### Funcionalidades
+
+- Criação automática de incidentes a partir de eventos.
+- Criação manual.
+- Correlação de alertas relacionados.
+- Classificação por severidade.
+- Associação com unidade.
+- Associação com equipamentos e serviços.
+- Responsável.
+- Status.
+- Histórico.
+- Comentários internos.
+- Reconhecimento.
+- Encerramento.
+- Registro da causa-raiz.
+- Tempo até reconhecimento.
+- Tempo até resolução.
+
+### Status
+
+- Novo.
+- Reconhecido.
+- Em investigação.
+- Em atendimento.
+- Monitorando.
+- Resolvido.
+- Encerrado.
+
+### Severidades
+
+- Informativo.
+- Baixo.
+- Médio.
+- Alto.
+- Crítico.
+
+### Correlação
+
+Exemplo:
+
+Se um roteador principal ficar offline e diversos APs e servidores da unidade também perderem comunicação, o sistema deverá evitar criar dezenas de pontos de atenção independentes sem contexto.
+
+Deverá tentar correlacionar os eventos e apresentar uma possível causa comum, mantendo a rastreabilidade dos alertas individuais.
+
+A correlação deverá ser baseada em regras verificáveis, sem apresentar hipóteses como causas confirmadas.
+
+---
+
+# 12. Motor de alertas e pontos de atenção
+
+Criar um mecanismo centralizado e configurável.
+
+### Regras
+
+- Criticidade do evento.
+- Criticidade do serviço.
+- Impacto na unidade.
+- Quantidade de sistemas afetados.
+- Persistência do problema.
+- Existência de incidentes associados.
+- Histórico de ocorrências.
+- Estado de reconhecimento.
+
+### Funcionalidades
+
+- Limites personalizáveis.
+- Silenciamento temporário.
+- Janelas de manutenção.
+- Escalonamento.
+- Notificações.
+- Reconhecimento.
+- Resolução automática mediante normalização confirmada.
+- Agrupamento de alertas repetidos.
+- Prevenção de notificações duplicadas.
+
+Definir expressamente a fórmula e os critérios utilizados no contador de pontos de atenção.
+
+O contador deve representar problemas ativos que demandam ação, e não simplesmente o total bruto de eventos recebidos.
+
+---
+
+# 13. Gestão de unidades hospitalares
+
+Criar um módulo administrativo para cadastro e gerenciamento das unidades.
+
+### Campos
+
+- Identificador.
+- Nome.
+- Código interno.
+- Tipo de estabelecimento.
+- Localidade.
+- Endereço.
+- Contato técnico.
+- Responsável pela unidade.
+- Criticidade.
+- Status.
+- Observações.
+
+### Relacionamentos
+
+Cada unidade poderá possuir:
+
+- Roteadores.
+- Links de internet.
+- Controladores e APs.
+- Servidores.
+- Hosts do Zabbix.
+- Agentes Wazuh.
+- Instâncias de backup.
+- Chamados.
+- Incidentes.
+- Alertas.
+- Serviços críticos.
+
+Permitir transferir equipamentos entre unidades mediante autorização, preservando o histórico.
+
+---
+
+# 14. Gestão de ativos de TI
+
+Além dos dados das integrações, criar um inventário centralizado.
+
+### Informações
+
+- Nome amigável do ativo.
+- Identificador.
+- Categoria.
+- Unidade.
+- Fabricante.
+- Modelo.
+- Número de série, quando apropriado.
+- Endereço IP.
+- Identificador externo na ferramenta de origem.
+- Sistema operacional.
+- Localização.
+- Responsável.
+- Criticidade.
+- Estado.
+- Última atualização.
+
+### Regras importantes
+
+- Evitar duplicação do mesmo equipamento quando monitorado por mais de uma ferramenta.
+- Associar múltiplas fontes ao mesmo ativo.
+- Preservar identidade e histórico.
+- Permitir identificação de dados divergentes entre fontes.
+- Não utilizar endereço IP isoladamente como identificador definitivo.
+
+---
+
+# 15. Atualização em tempo real
+
+Implementar atualização automática do dashboard **a cada 10 segundos**.
+
+### Comportamento
+
+- Atualizar indicadores sem recarregar toda a página.
+- Atualizar lista de alertas.
+- Atualizar status dos equipamentos.
+- Atualizar incidentes.
+- Atualizar notificações.
+- Atualizar gráficos de acordo com os dados recebidos.
+
+Separar o intervalo de atualização visual do intervalo de coleta das integrações.
+
+A interface poderá atualizar a cada 10 segundos, mas cada fonte deverá ter um intervalo de coleta próprio e configurável.
+
+Por exemplo:
+
+| Fonte | Intervalo inicial sugerido |
+|---|---|
+| MikroTik | 10–30 segundos |
+| GLPI | 60 segundos |
+| UniFi | 30 segundos |
+| Zabbix | 30 segundos |
+| Wazuh | 60 segundos |
+| Duplicati | 60 segundos |
+
+Esses intervalos são valores iniciais e deverão respeitar a capacidade, a documentação e os limites de cada API.
+
+### Requisitos técnicos
+
+- Executar coletas no backend.
+- Nunca expor credenciais de integração no navegador.
+- Utilizar filas e processos de coleta desacoplados.
+- Aplicar timeouts.
+- Utilizar retry com backoff.
+- Evitar coletas simultâneas duplicadas.
+- Controlar concorrência.
+- Utilizar cache.
+- Detectar dados desatualizados.
+- Registrar última tentativa e última coleta bem-sucedida.
+- Permitir desativar integrações individualmente.
+
+O sistema deverá possuir processo local de coleta executável no ServBay, incluindo comando próprio para operação contínua em intervalos menores que um minuto.
+
+Não depender exclusivamente de cron de um minuto para cumprir a atualização de 10 segundos.
+
+Quando uma integração perder comunicação, não mostrar dados antigos como se fossem atuais.
+
+---
+
+# 16. Configuração de integrações
+
+Criar uma página administrativa para configurar cada plataforma.
+
+### Campos
+
+- Nome da integração.
+- Tipo.
+- Unidade ou escopo.
+- URL/endereço do serviço.
+- Porta, quando necessária.
+- Credenciais ou token.
+- Intervalo de coleta.
+- Timeout.
+- Estado habilitado/desabilitado.
+- Última sincronização.
+- Resultado da última tentativa.
+- Mensagem sanitizada de erro.
+
+### Funcionalidades
+
+- Testar conexão.
+- Validar credenciais.
+- Salvar configuração.
+- Habilitar/desabilitar.
+- Executar sincronização manual.
+- Visualizar logs.
+- Consultar histórico de sincronizações.
+
+### Segurança
+
+Credenciais deverão ser criptografadas em repouso, nunca exibidas integralmente e nunca incluídas nos logs.
+
+Exigir validação TLS adequada e permitir configuração de autoridade certificadora interna quando necessário.
+
+Não desabilitar a verificação de certificados como solução padrão.
+
+As integrações deverão ser implementadas através de adaptadores independentes, permitindo manutenção e atualização sem alterações extensas na aplicação principal.
+
+Não inventar endpoints. A implementação real deverá utilizar a documentação oficial da versão configurada de cada serviço.
+
+---
+
+# 17. Gestão de usuários e permissões
+
+Implementar autenticação completa.
+
+### Perfis
+
+**Superadministrador**
+- Acesso total.
+- Configurações.
+- Integrações.
+- Usuários.
+- Permissões.
+- Auditoria.
+
+**Administrador de TI**
+- Gerenciamento operacional.
+- Unidades autorizadas.
+- Incidentes.
+- Alertas.
+- Relatórios.
+
+**Analista NOC**
+- Monitoramento.
+- Reconhecimento de incidentes.
+- Investigação.
+- Comentários.
+- Atualização dos incidentes permitidos.
+
+**Analista SOC**
+- Acesso aos painéis de segurança autorizados.
+- Eventos Wazuh.
+- Incidentes de segurança.
+
+**Gestor**
+- Dashboards.
+- Indicadores.
+- Relatórios gerenciais.
+- Visão consolidada das unidades autorizadas.
+
+**Visualizador**
+- Consulta somente leitura.
+
+### Segurança
+
+Implementar:
+
+- Controle de acesso por perfil e unidade.
+- Hash seguro de senhas.
+- Proteção CSRF.
+- Validação de entrada.
+- Proteção contra SQL Injection e XSS.
+- Rate limiting.
+- Controle de sessões.
+- Logs de autenticação.
+- Auditoria de operações críticas.
+- Expiração de sessões.
+- Possibilidade futura de autenticação multifator e SSO.
+
+Usuários não devem conseguir consultar unidades não autorizadas manipulando URLs ou parâmetros das requisições.
+
+---
+
+# 18. Notificações
+
+Criar uma central de notificações interna.
+
+### Eventos
+
+- Unidade indisponível.
+- Link WAN offline.
+- Serviço crítico indisponível.
+- Backup com falha.
+- Incidente crítico.
+- SLA vencido.
+- Evento de segurança relevante.
+- Integração desconectada.
+
+### Recursos
+
+- Notificações não lidas.
+- Histórico.
+- Filtros.
+- Preferências por usuário.
+- Preferências por unidade.
+- Silenciamento configurável.
+- Agrupamento de eventos relacionados.
+
+Preparar arquitetura para integrações futuras com:
+
+- E-mail.
+- Microsoft Teams.
+- Telegram.
+- Webhooks.
+
+Não exigir serviços externos para funcionamento do MVP local.
+
+---
+
+# 19. Relatórios e indicadores
+
+Criar um módulo de relatórios operacionais e gerenciais.
+
+### Relatórios
+
+- Disponibilidade por unidade.
+- Disponibilidade dos links WAN.
+- Ocorrências por período.
+- Incidentes por severidade.
+- Chamados GLPI.
+- Cumprimento de SLA.
+- Ativos indisponíveis.
+- Desempenho de infraestrutura.
+- Alertas de segurança.
+- Execuções de backup.
+- Tempo médio de reconhecimento.
+- Tempo médio de resolução.
+- Histórico de pontos de atenção.
+
+### Filtros
+
+- Período.
+- Unidade.
+- Ferramenta.
+- Categoria.
+- Severidade.
+- Ativo.
+- Status.
+
+### Exportações
+
+- CSV.
+- PDF.
+- Impressão.
+
+Apresentar gráficos claros e tabelas profissionais.
+
+Indicar o período utilizado no cálculo dos indicadores e explicar como a disponibilidade e os tempos médios foram calculados.
+
+---
+
+# 20. Histórico, métricas e auditoria
+
+Implementar persistência dos dados coletados.
+
+### Requisitos
+
+- Histórico de métricas.
+- Histórico de estado dos ativos.
+- Histórico de incidentes.
+- Histórico de alertas.
+- Histórico de sincronizações.
+- Registro de alterações.
+- Auditoria das ações dos usuários.
+- Retenção configurável.
+- Agregação de métricas históricas.
+- Limpeza automatizada de dados antigos.
+- Índices adequados para consultas frequentes.
+
+Evitar crescimento descontrolado da base de dados.
+
+Utilizar estratégia de agregação, como métricas detalhadas recentes e consolidações por hora ou dia para históricos longos.
+
+---
+
+# 21. Modelagem do banco de dados
+
+Projetar uma estrutura relacional consistente, contemplando ao menos as entidades:
+
+- users
+- roles
+- permissions
+- organizational_units
+- user_unit_access
+- assets
+- asset_identifiers
+- asset_relationships
+- monitored_services
+- integrations
+- integration_credentials
+- integration_sync_logs
+- metric_definitions
+- metric_samples
+- asset_status_history
+- alerts
+- alert_rules
+- alert_events
+- incidents
+- incident_events
+- incident_comments
+- incident_assignments
+- maintenance_windows
+- notifications
+- notification_preferences
+- backup_jobs
+- backup_executions
+- audit_logs
+- system_settings
+
+A lista é uma referência funcional, não uma imposição de criar tabelas redundantes.
+
+O engenheiro deverá decidir a normalização adequada, justificar alterações relevantes e implementar relacionamentos, chaves estrangeiras, índices e constraints.
+
+Sempre que possível, manter os dados específicos dos sistemas externos desacoplados do modelo central.
+
+---
+
+# 22. Modo demonstração e modo produção
+
+O sistema deverá possuir dois modos operacionais claramente identificados.
+
+## Modo demonstração
+
+Na instalação inicial, carregar dados inteiramente fictícios.
+
+Criar seis unidades:
+
+1. Hospital Central.
+2. Hospital Regional Norte.
+3. Hospital Regional Sul.
+4. Unidade de Pronto Atendimento Leste.
+5. Centro de Diagnóstico.
+6. Unidade Administrativa.
+
+Criar exemplos fictícios de:
+
+- Roteadores MikroTik.
+- Links de internet.
+- Servidores.
+- Equipamentos UniFi.
+- Hosts Zabbix.
+- Agentes Wazuh.
+- Chamados GLPI.
+- Jobs Duplicati.
+- Incidentes.
+- Alertas.
+- Usuários.
+- Histórico de métricas dos últimos 30 dias.
+
+O modo demonstração deverá simular alterações coerentes ao longo do tempo.
+
+Exemplos:
+
+- Aumento gradual do consumo de CPU.
+- Link apresentando latência elevada.
+- Servidor passando de online para offline.
+- Novo chamado crítico.
+- Falha em um backup.
+- Recuperação de um equipamento.
+- Alerta de segurança.
+- Incidente sendo resolvido.
+
+As simulações devem preservar consistência entre estado atual, histórico, incidentes e alertas.
+
+Incluir um botão administrativo para redefinir os dados demonstrativos.
+
+Exibir identificação inequívoca de que os dados são simulados.
+
+## Modo produção/integrado
+
+Permitir cadastrar integrações reais.
+
+Ao ativar o modo integrado:
+
+- Utilizar dados provenientes das APIs configuradas.
+- Exibir claramente integrações não configuradas.
+- Exibir falhas de conexão.
+- Indicar dados desatualizados.
+- Não substituir silenciosamente dados ausentes por informações fictícias.
+- Permitir modo misto por integração, desde que fontes simuladas sejam identificadas.
+
+O modo integrado deverá ser desenvolvido mesmo sem acesso inicial aos equipamentos reais.
+
+---
+
+# 23. Segurança da informação e LGPD
+
+Por se tratar de ambiente hospitalar, adotar requisitos rigorosos.
+
+### Obrigatório
+
+- Não coletar dados pessoais de pacientes.
+- Não armazenar prontuários médicos.
+- Não registrar senhas em logs.
+- Não expor tokens em respostas.
+- Não revelar topologia interna a usuários não autorizados.
+- Restringir acesso a IPs e hostnames.
+- Sanitizar mensagens de erro.
+- Aplicar criptografia aos segredos das integrações.
+- Manter trilha de auditoria.
+- Implementar menor privilégio.
+- Utilizar conexões seguras.
+- Evitar armazenar payloads sensíveis sem necessidade.
+- Controlar retenção de logs.
+- Proteger downloads e relatórios com autorização.
+
+O painel deve permitir o uso de nomes amigáveis para ativos e unidades, sem necessidade de expor os identificadores técnicos na visão executiva.
+
+Criar telas administrativas específicas para dados sensíveis, protegidas por permissões adequadas.
+
+A plataforma deverá iniciar com integrações em modo somente leitura.
+
+Não implementar execução remota de comandos, alteração de firewall, reinicialização de equipamentos ou operações destrutivas como parte automática do monitoramento.
+
+---
+
+# 24. Arquitetura da aplicação
+
+Adotar uma estrutura modular, organizada e sustentável.
+
+### Camadas
+
+**Apresentação**
+- Dashboards.
+- Componentes Livewire.
+- Layouts.
+- Gráficos.
+- Formulários.
+
+**Aplicação**
+- Controllers.
+- Services.
+- Jobs.
+- Policies.
+- Validações.
+- Casos de uso.
+
+**Domínio**
+- Unidades.
+- Ativos.
+- Alertas.
+- Incidentes.
+- Integrações.
+- Métricas.
+- Regras de negócio.
+
+**Infraestrutura**
+- Banco de dados.
+- Cache.
+- Filas.
+- Clientes HTTP.
+- Adaptadores das APIs.
+- Logs.
+- Mecanismo de sincronização.
+
+Criar contratos padronizados para os conectores.
+
+Cada conector deverá implementar funções equivalentes a:
+
+- Testar conectividade.
+- Validar configuração.
+- Executar coleta.
+- Normalizar dados.
+- Informar o estado da integração.
+- Registrar erros de sincronização.
+
+A implementação deverá ser testável e permitir criação de novos conectores futuramente.
+
+---
+
+# 25. Funcionalidades adicionais importantes
+
+Implementar também:
+
+### Pesquisa global
+Localizar unidades, equipamentos, serviços, incidentes e chamados.
+
+### Filtros persistentes
+Manter a seleção de unidade, período e categorias durante a navegação, quando apropriado.
+
+### Personalização do dashboard
+Permitir escolher cards e indicadores visíveis por perfil.
+
+### Modo TV / NOC
+Criar um dashboard específico para monitores de grandes dimensões:
+
+- Sem menus desnecessários.
+- Atualização automática.
+- Indicadores grandes.
+- Unidades em destaque.
+- Alertas críticos visíveis.
+- Estado consolidado.
+- Adequado para operação contínua.
+
+### Dependências entre serviços
+Permitir mapear relações como:
+
+Unidade → Roteador → Link WAN → Serviços → Aplicações críticas.
+
+Isso deverá ajudar a compreender o impacto de falhas.
+
+### Janela de manutenção
+Impedir alertas operacionais indevidos durante manutenções previamente cadastradas, sem apagar os eventos coletados.
+
+### Estado de integridade da plataforma
+Criar página com:
+
+- Estado do banco de dados.
+- Worker de coleta.
+- Filas.
+- Última sincronização.
+- Integrações com erros.
+- Jobs pendentes.
+- Falhas de processamento.
+- Estado do cache.
+
+---
+
+# 26. Regras de negócio essenciais
+
+Implementar e documentar:
+
+1. Um ativo pode pertencer a uma unidade e ser monitorado por múltiplas ferramentas.
+2. A mesma ocorrência não deve gerar pontos de atenção duplicados sem necessidade.
+3. Um incidente reconhecido continua ativo até sua resolução.
+4. Dados antigos devem ser identificados como desatualizados.
+5. Falha na coleta não significa automaticamente falha do equipamento.
+6. Um serviço crítico tem maior impacto operacional que um ativo comum.
+7. O encerramento de incidentes deve preservar histórico.
+8. Ações dos usuários devem respeitar as permissões de acesso.
+9. Dados simulados e reais nunca devem ser confundidos.
+10. O backend deve continuar funcionando caso alguma integração fique indisponível.
+11. Os dashboards devem apresentar estados vazios e mensagens adequadas.
+12. Os processos de coleta devem ser idempotentes quando aplicável.
+13. A classificação de prioridades deverá considerar impacto e urgência.
+14. O sistema não deverá depender da disponibilidade simultânea das seis plataformas.
+15. Todo indicador calculado deverá ter uma regra documentada.
+
+---
+
+# 27. Contas de teste
+
+Criar usuários fictícios pelo seeder para desenvolvimento local:
+
+| Perfil | Login | Senha |
+|---|---|---|
+| Superadministrador | admin@hospital.local | Admin@123456 |
+| Administrador TI | ti@hospital.local | Ti@123456 |
+| Analista NOC | noc@hospital.local | Noc@123456 |
+| Analista SOC | soc@hospital.local | Soc@123456 |
+| Gestor | gestor@hospital.local | Gestor@123456 |
+| Visualizador | viewer@hospital.local | Viewer@123456 |
+
+As senhas deverão ser armazenadas utilizando hash seguro.
+
+Essas credenciais são exclusivamente demonstrativas, devendo ser substituídas ou desabilitadas antes de qualquer implantação fora do ambiente local de testes.
+
+Todas as contas deverão estar associadas aos respectivos perfis e permissões.
+
+---
+
+# 28. Instalação no ServBay
+
+Entregar a aplicação totalmente preparada para execução local.
+
+### Obrigações
+
+1. Criar todos os arquivos do projeto.
+2. Incluir `composer.json` e `package.json`.
+3. Criar `.env.example`.
+4. Configurar conexão MySQL.
+5. Criar migrations.
+6. Criar seeders.
+7. Implementar autenticação.
+8. Compilar os recursos frontend.
+9. Configurar armazenamento e cache.
+10. Configurar filas e processos de sincronização.
+11. Disponibilizar dados de teste.
+12. Configurar comandos de inicialização.
+13. Documentar a instalação no ServBay.
+14. Documentar o processo de atualização.
+15. Documentar como cadastrar as integrações reais.
+
+Incluir comandos de inicialização e configuração, como:
+
+```bash
+composer install
+npm install
+npm run build
+
+php artisan key:generate
+php artisan migrate --seed
+php artisan storage:link
+```
+
+Os comandos deverão ser ajustados conforme a implementação efetiva.
+
+A aplicação deverá funcionar através de um domínio local configurado no ServBay, por exemplo:
+
+```text
+hospital-noc.test
+```
+
+O domínio deverá apontar para a pasta pública adequada do Laravel.
+
+Documentar também como iniciar os workers e o coletor contínuo local.
+
+Não presumir que processos de fila estarão automaticamente ativos apenas porque o servidor web foi iniciado.
+
+---
+
+# 29. Qualidade, testes e validação
+
+Implementar testes automatizados e verificações funcionais para:
+
+- Login.
+- Permissões.
+- Restrições por unidade.
+- Cadastro de unidades.
+- Cadastro de ativos.
+- Cadastro de integrações.
+- Teste de conexão com conectores simulados.
+- Tratamento de erro de API.
+- Normalização de métricas.
+- Coleta de dados.
+- Atualização dos indicadores.
+- Geração de alertas.
+- Deduplicação.
+- Correlação básica de incidentes.
+- Reconhecimento e encerramento de incidentes.
+- Histórico.
+- Relatórios.
+- Funcionamento de seeders.
+- Operações do dashboard.
+
+Criar respostas fictícias de APIs para os testes automatizados, sem exigir serviços externos reais.
+
+Garantir que não existam botões decorativos sem funcionamento, formulários sem persistência ou indicadores que apresentem números fixos sem identificação.
+
+Executar verificações reais quando o ambiente permitir e informar explicitamente o que não pôde ser testado.
+
+---
+
+# 30. Critérios de aceite
+
+A aplicação somente será considerada funcional quando:
+
+- O usuário conseguir acessar a página de login.
+- As contas demonstrativas funcionarem.
+- As permissões forem respeitadas.
+- As seis unidades fictícias estiverem cadastradas.
+- O dashboard carregar dados persistidos do banco.
+- Os cards apresentarem indicadores coerentes.
+- Os filtros funcionarem.
+- A atualização visual ocorrer automaticamente a cada 10 segundos.
+- O modo demonstração apresentar eventos simulados consistentes.
+- A central de alertas funcionar.
+- O contador de pontos de atenção refletir incidentes relevantes.
+- Os incidentes puderem ser reconhecidos, acompanhados e encerrados.
+- As páginas de cada integração existirem e forem funcionais.
+- Os conectores reais possuírem configuração e tratamento de falhas.
+- Os relatórios funcionarem.
+- O histórico for persistido.
+- Os principais testes automatizados passarem.
+- A aplicação estiver configurada para executar localmente no ServBay.
+
+---
+
+# 31. Forma de entrega
+
+Entregar um projeto completo e organizado.
+
+A entrega deverá conter:
+
+- Código-fonte backend.
+- Código-fonte frontend.
+- Arquivos de configuração.
+- Migrations.
+- Seeders.
+- Testes.
+- Recursos visuais.
+- Instruções de instalação.
+- Documentação de arquitetura.
+- Documentação das integrações.
+- Contas demonstrativas.
+- Manual básico de uso.
+- Arquivo ZIP contendo o projeto, caso o ambiente permita disponibilizá-lo.
+
+Não fornecer apenas imagens de referência, protótipos estáticos ou trechos incompletos de código.
+
+Não afirmar que uma integração real funciona sem ter executado e validado uma conexão compatível.
+
+Caso algum conector dependa de versão específica da ferramenta externa, implementar sua interface e o adaptador verificável, documentando exatamente o que falta para validar a integração real.
+
+---
+
+# 32. Ordem de desenvolvimento
+
+Organize o trabalho nas seguintes fases:
+
+**Fase 1 — Fundação**
+- Estrutura do Laravel.
+- Banco de dados.
+- Autenticação.
+- Perfis e permissões.
+- Layout principal.
+- Cadastro de unidades.
+
+**Fase 2 — Centro de operações**
+- Dashboard consolidado.
+- Cards.
+- Filtros.
+- Gráficos.
+- Dados fictícios.
+- Atualização de 10 segundos.
+
+**Fase 3 — Monitoramento**
+- Cadastro de ativos.
+- Estrutura de integrações.
+- Adaptadores MikroTik, GLPI, UniFi, Zabbix, Wazuh e Duplicati.
+- Coleta automatizada.
+- Histórico de métricas.
+
+**Fase 4 — Gestão operacional**
+- Alertas.
+- Pontos de atenção.
+- Incidentes.
+- Correlação.
+- Notificações.
+- Janelas de manutenção.
+
+**Fase 5 — Gestão e inteligência**
+- Relatórios.
+- Indicadores.
+- SLA.
+- Auditoria.
+- Dashboard de gestão.
+- Modo TV / NOC.
+
+**Fase 6 — Finalização**
+- Testes.
+- Correções.
+- Revisão de segurança.
+- Otimização.
+- Documentação.
+- Preparação para ServBay.
+- Entrega final.
+
+Priorize uma primeira versão realmente executável e consistente, mas mantenha a arquitetura preparada para todos os módulos.
+
+Não omita requisitos sem identificá-los. Caso seja necessário dividir a implementação em etapas, entregue um sistema funcional e executável ao final de cada etapa.
+
+---
+
+# 33. Resultado esperado
+
+O resultado deverá ser uma plataforma centralizada de operações de TI para redes hospitalares, capaz de responder rapidamente:
+
+- Quais unidades estão enfrentando problemas?
+- Existe alguma unidade sem internet?
+- Quais servidores estão indisponíveis?
+- Quais serviços hospitalares críticos estão afetados?
+- Quais equipamentos estão sobrecarregados?
+- Quais chamados precisam de atenção?
+- Existem incidentes de segurança relevantes?
+- Quais backups falharam?
+- Qual é o impacto de uma falha?
+- Quem está responsável por cada incidente?
+- Quais problemas devem ser resolvidos primeiro?
+- Como está a disponibilidade da infraestrutura ao longo do tempo?
+
+A plataforma deverá transmitir a sensação de um produto corporativo maduro, adequado para uso por equipes de infraestrutura, service desk, NOC, SOC e gestores de TI.
+
+**Prioridade absoluta: entregar um sistema funcional, seguro, integrado, extensível e preparado para execução local no ServBay, e não apenas uma interface visualmente bonita.**

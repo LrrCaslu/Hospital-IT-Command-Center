@@ -1,0 +1,13 @@
+VERIFICACAO DO BANCO - 2026-11-17T11:58:48
+[2026-11-17 11:58:48] OK: pastas do Laravel criadas e com gravacao confirmada (bootstrap/cache e storage).
+[2026-11-17 11:58:49] PHP CLI: C:\ServBay\bin\php-8.4.cmd
+[2026-11-17 11:58:49] INICIANDO: verificar banco, tabelas e seeders (somente leitura)
+Banco conectado: hospital_it_noc
+Tabelas: 38
+Unidades cadastradas: 6
+Usuarios cadastrados: 6
+Conta demonstrativa admin: SIM
+[OK] Banco, migrations e seeders disponiveis.
+[2026-11-17 11:58:49] OK: verificar banco, tabelas e seeders (somente leitura)
+[2026-11-17 11:58:49] [OK] Banco preparado. Configuracao e abertura do site ficam a cargo do ServBay.
+[2026-11-17 11:58:49] Pasta publica: C:\Users\Estatísticas\Downloads\Hospital_IT_Command_Center_ServBay_CACHE_CORRIGIDO\hospital-it-command-center\public
