@@ -1,0 +1,2 @@
+<div wire:poll.10s class="livewire-pulse" aria-live="polite"><span class="pulse-small"></span> <?php echo e($incidentCount); ?> incidentes ativos acompanhados</div>
+<?php /**PATH C:\Users\Estatísticas\Downloads\Hospital_IT_Command_Center_ServBay_CACHE_CORRIGIDO\hospital-it-command-center\resources\views/livewire/incident-pulse.blade.php ENDPATH**/ ?>
